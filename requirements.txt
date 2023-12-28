@@ -1,0 +1,4 @@
+Flask
+Flask-SocketIO
+python-libtorrent
+Flask-CORS
