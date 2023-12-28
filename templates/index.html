@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Peer Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='socket.io.js') }}"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #magnetForm {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #magnetForm input[type="text"] {
+            width: 40%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #magnetForm button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+        #magnetForm button:hover {
+            background-color: #0056b3;
+        }
+        #map {
+            height: 80vh;
+        }
+    </style>
+</head>
+<body>
+    <form id="magnetForm">
+        <input type="text" id="magnetLink" placeholder="Enter Magnet Link">
+        <button type="submit">Track</button>
+    </form>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([0, 0], 2); // Initialize the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('new_peer', function(data) {
+            if (data.lat !== "Unknown" && data.lon !== "Unknown") {
+                var popupContent = 'IP: ' + data.ip + '<br>Location: ' + data.city + ', ' + data.country;
+                L.marker([data.lat, data.lon]).addTo(map)
+                    .bindPopup(popupContent);
+            }
+        });
+        document.getElementById('magnetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var magnetLink = document.getElementById('magnetLink').value;
+            socket.emit('new_magnet_link', { magnet_link: magnetLink });
+
+            // Clear existing markers
+            map.eachLayer(function(layer){
+                if (layer instanceof L.Marker){
+                    map.removeLayer(layer);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
