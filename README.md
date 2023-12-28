@@ -8,7 +8,7 @@ Welcome to the Torrent Map Tracker repository! This project is dedicated to trac
 - **Geolocation Visualization**: See the geographical location of peers.
 - **Interactive UI**: Easy to use web interface for tracking torrents.
 
-📸 Example gif
+📸 Example image
 <p align="center">
   <img src="./static-images/Example.png" alt="Example after running Kali magnet">
 </p>
