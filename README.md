@@ -15,6 +15,21 @@ Welcome to the Torrent Map Tracker repository! This project is dedicated to trac
 
 ## 🛠 Installation
 
+### IMPORTANT!!!!
+
+You will need this file
+- https://download.db-ip.com/free/dbip-city-lite-2023-12.csv.gz
+This file is formatted like so:
+
+| Start IP  | End IP        | Continent | Country | State     | City                | Latitude | Longitude |
+|-----------|---------------|-----------|---------|-----------|---------------------|----------|-----------|
+| 1.0.16.0  | 1.0.16.255    | AS        | JP      | Tokyo     | Chiyoda             | 35.6916  | 139.768   |
+| 1.0.17.0  | 1.0.31.255    | AS        | JP      | Tokyo     | Shinjuku (1-chōme)  | 35.6944  | 139.703   |
+| 1.0.32.0  | 1.0.63.255    | AS        | CN      | Guangdong | Xiaolou             | 23.379   | 113.763   |
+
+- In the future, adjusting co-ords instead of just subnets, can provide more accurate information.
+
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/pentestfunctions/torrent-map-tracker.git
