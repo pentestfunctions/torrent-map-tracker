@@ -10,7 +10,7 @@ Welcome to the Torrent Map Tracker repository! This project is dedicated to trac
 
 📸 Example image
 <p align="center">
-  <img src="./static-images/Example.png" alt="Example after running Kali magnet">
+  <img src="./static-images/61SWN1V.png" alt="Example after running Kali magnet">
 </p>
 
 ## 🛠 Installation
