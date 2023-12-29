@@ -6,6 +6,17 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
     <script src="{{ url_for('static', filename='socket.io.js') }}"></script>
     <style>
+        .popup-content {
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .webserver-found {
+            background-color: lightgreen;
+        }
+        .webserver-not-found {
+            background-color: lightcoral;
+        }
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -36,7 +47,7 @@
             background-color: #0056b3;
         }
         #map {
-            height: 80vh;
+            height: 80vh; /* Reduced height */
         }
     </style>
 </head>
@@ -53,14 +64,35 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('new_peer', function(data) {
-            if (data.lat !== "Unknown" && data.lon !== "Unknown") {
-                var popupContent = 'IP: ' + data.ip + '<br>Location: ' + data.city + ', ' + data.country;
-                L.marker([data.lat, data.lon]).addTo(map)
-                    .bindPopup(popupContent);
-            }
-        });
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+            socket.on('new_peer', function(data) {
+                console.log("Received data:", data);  // Debugging line
+                        
+                if (data.lat !== "Unknown" && data.lon !== "Unknown") {
+                    var scanResultsInfo = data.scan_results[0].join('<br>'); // Access the first element for scan result details
+                    var webserverFound = data.scan_results[1]; // Access the second element for the webserver_found flag
+                    console.log("Webserver found:", webserverFound);  // Log the webserver_found status
+                
+                    var popupContent = '<div class="popup-content">IP: ' + data.ip + '<br>Location: ' + data.city + ', ' + data.country + '<br>' + scanResultsInfo + '</div>';
+                    
+                    var iconUrl = webserverFound ? '/static/icon-green.png' : '/static/icon-blue.png';
+                    console.log("Icon URL: ", iconUrl);  // Debugging line
+                
+                    var customIcon = L.icon({
+                        iconUrl: iconUrl,
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [0, -41]
+                    });
+                
+                    L.marker([data.lat, data.lon], {icon: customIcon}).addTo(map)
+                        .bindPopup(popupContent);
+                }
+            });
+
+
+
+
         document.getElementById('magnetForm').addEventListener('submit', function(e) {
             e.preventDefault();
             var magnetLink = document.getElementById('magnetLink').value;
