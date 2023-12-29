@@ -9,6 +9,7 @@ Welcome to the Torrent Map Tracker repository! This project is dedicated to trac
 - **Interactive UI**: Easy to use web interface for tracking torrents.
 
 📸 Example image
+- These are all the Kali torrenters in the last 24 hours who didn't use a VPN. Green means they have an open webserver port on one of these ports "8080,80,8888,443,1337,9000,420"
 <p align="center">
   <img src="./static-images/61SWN1V.png" alt="Example after running Kali magnet">
 </p>
