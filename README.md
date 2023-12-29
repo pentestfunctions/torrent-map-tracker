@@ -49,6 +49,7 @@ pip install -r requirements.txt
 
 To start the tracker, run the following command:
 ```bash
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 python app.py
 ```
 
